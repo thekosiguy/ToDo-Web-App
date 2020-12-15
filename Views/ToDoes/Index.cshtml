@@ -1,0 +1,36 @@
+﻿@model ToDoList.Models.ToDo
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h3>My To-Do List</h3>
+
+<div id="tableDiv"></div>
+<strong>Simply enter a description for your task and press enter.</strong>
+<br /><br />
+<div id="toDoCreateForm">
+    @using (Ajax.BeginForm("AJAXCreate", "ToDoes",
+           new AjaxOptions
+           {
+               InsertionMode = InsertionMode.Replace,
+               HttpMethod = "POST",
+               UpdateTargetId = "tableDiv"
+           }))
+
+        {
+        @Html.AntiForgeryToken()
+        <div class="form-group">
+            <div>
+                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        }
+</div>
+
+@section Scripts{
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Custom_Scripts/BuildTable.js"></script>
+    @Scripts.Render("~/bundles/jqueryval");
+} 
